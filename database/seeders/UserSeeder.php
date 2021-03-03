@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
                 'email' => 'laravelproject12345@gmail.com',
                 'password' => bcrypt('12345678'),
                 'photo' => 'laravel.img',
-                'created_at' => '2021-02-18-10:20:45',
+                'created_at' => '2021-02-18 10:20:45',
             ]
         ]);
     }
