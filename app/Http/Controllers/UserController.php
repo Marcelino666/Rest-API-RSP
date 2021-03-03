@@ -182,24 +182,26 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
 
-        // $validator = Validator::make($request->all(), [
-        //     'email' => ['required','unique:users,email'],
-        //     'password'=> ['required'],
-        //     'photo' => ['required']
-        // ]);
+        $validator = Validator::make($request->all(), [
+            'photo' => ['image']
+        ]);
 
-        // if($validator->fails())
-        // {
-        //     return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
-        // }
+        if($validator->fails())
+        {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         try{
             $user_id = Auth::id();
             $result = User::where('id', $user->id)->firstOrFail();
             if($result->id == $user_id)
             {
+                $file = $request->file('photo');
+            //    $extension = $file->getClientOriginalExtension();
+            //    $filename = time() . '.' . $extension;
+            //    $file->move('images', $filename);
                 Storage::disk('dropbox')->delete($result->photo);
-                $file = $request->photo;
+
                 $path = Storage::disk('dropbox')->put('images', $file);
                 $result->update([
                     'email' => $request->email, 

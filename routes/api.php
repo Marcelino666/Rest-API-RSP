@@ -42,13 +42,13 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['auth.role:1'])->group(function () {
         Route::post('room', [RoomController::class, 'store']);
         Route::put('room/{rooms}', [RoomController::class, 'update']);
-        Route::delete('room/{rooms}', [RoomController::class, 'delete']);
+        Route::delete('room/{rooms}', [RoomController::class, 'destroy']);
     });
 });
 
 //Fitur Routes
-Route::resource('user', UserController::class)->except('create','store','edit','update');
-Route::resource('booking', BookingController::class)->except('create','edit','update');
+Route::resource('user', UserController::class)->except('create','store','edit');
+Route::resource('booking', BookingController::class)->except('create','edit');
 Route::post('checkin', CheckInController::class);
 Route::post('checkout', CheckOutController::class);
 

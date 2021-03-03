@@ -47,7 +47,7 @@ class RoomController extends Controller
         $request -> validate([
             'room_name' => ['required','unique:rooms,room_name'],
             'room_capacity' => ['required','numeric'],
-            'photo' => ['required']
+            'photo' => ['required','image']
         ]);
 
         try{
@@ -104,9 +104,9 @@ class RoomController extends Controller
         $result = Room::where('id', $id)->firstOrFail();
 
         $validator = Validator::make($request->all(), [
-            'room_name' => ['required'],
-            'room_capacity' => ['required','numeric'],
-            'photo' => ['required']
+            // 'room_name' => ['required'],
+            'room_capacity' => ['numeric'],
+            'photo' => ['image']
         ]);
 
         if($validator->fails())
@@ -115,11 +115,14 @@ class RoomController extends Controller
         }
         
         try{
-            
+            $file = $request->file('photo');
+            Storage::disk('dropbox')->delete($result->photo);
+            $path = Storage::disk('dropbox')->put('rooms', $file);
+
             $result->update([
                 'room_name' => $request->room_name, 
                 'room_capacity' => $request->room_capacity,
-                'photo' => $request->photo
+                'photo' => $path
             ]);
 
             $response = [

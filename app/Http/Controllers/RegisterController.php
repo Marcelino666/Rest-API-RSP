@@ -32,7 +32,7 @@ class RegisterController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => ['required','unique:users,email'],
             'password'=> ['required'],
-            'photo' => ['required']
+            'photo' => ['required','image']
         ]);
         
         if($validator->fails())

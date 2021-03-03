@@ -155,7 +155,6 @@ class BookingController extends Controller
             $user_id = Auth::id();
             $booking = Booking::where('id', $id)->firstOrFail();
             $room = Room::where('id', $request->room_id)->firstOrFail();
-            dd($room);
             if($booking->user_id == $user_id)
             {
                 if($request->room_id != $booking->room_id)
@@ -168,6 +167,11 @@ class BookingController extends Controller
                     }
                     else
                     {
+                        $oldroom = Room::where('id', $booking->room_id)->firstOrFail();
+                        $oldroom->update([
+                            'room_capacity' => $oldroom->room_capacity + $booking->total_person
+                        ]); 
+
                         $room->update([
                             'room_capacity' => $room->room_capacity - $request->total_person
                         ]); 
