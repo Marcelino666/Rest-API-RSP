@@ -16,22 +16,16 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'email' => 'admin@refactory.id',
+                'email' => 'admin@rsp.id',
                 'password' => bcrypt('Refactory!2016'),
                 'photo' => 'admin.img',
-                'created_at' => '2021-02-18-00:00:00',
+                'created_at' => '2021-02-18 00:00:00',
             ],
             [
-                'email' => 'marcelinoahong0707@gmail.com',
-                'password' => bcrypt('87654321'),
-                'photo' => 'marcelino.img',
-                'created_at' => '2021-02-18-10:20:45',
-            ],
-            [
-                'email' => 'davidkristian07@gmail.com',
+                'email' => 'laravelproject12345@gmail.com',
                 'password' => bcrypt('12345678'),
-                'photo' => 'david.img',
-                'created_at' => '2021-02-20-10:20:45',
+                'photo' => 'laravel.img',
+                'created_at' => '2021-02-18-10:20:45',
             ]
         ]);
     }
