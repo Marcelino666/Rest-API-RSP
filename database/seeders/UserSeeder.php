@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'email' => 'admin@rsp.id',
-                'password' => bcrypt('Refactory!2016'),
+                'password' => bcrypt('Refactory!2021'),
                 'photo' => 'admin.img',
                 'created_at' => '2021-02-18 00:00:00',
             ],
