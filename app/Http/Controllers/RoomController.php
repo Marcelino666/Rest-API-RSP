@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth; 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class RoomController extends Controller
 {
@@ -26,6 +27,7 @@ class RoomController extends Controller
     public function index()
     {
         $room = Room::get()->where('room_capacity', '!=', 0);
+
         $response = [
             'message' => 'List Rooms',
             'data' => $room
@@ -49,10 +51,13 @@ class RoomController extends Controller
         ]);
 
         try{
+            $file = $request->file('photo');
+            $path = Storage::disk('dropbox')->put('rooms', $file);
+
             $room = Room::create([
                 'room_name' => request('room_name'),
                 'room_capacity' => request('room_capacity'),
-                'photo' => request('photo')
+                'photo' => $path
             ]);
 
             $response = [
@@ -77,9 +82,12 @@ class RoomController extends Controller
     public function show($id)
     {
         $result = Room::where('id', $id)->firstOrFail();
+        $path = Storage::disk('dropbox')->url($result->photo);
+       
         $response = [
             'message' => 'Detail of Room resource',
-            'data' => $result
+            'data' => $result,
+            'photo-url' => $path
         ];
         return response()->json($response, Response::HTTP_OK);
     }
@@ -138,7 +146,7 @@ class RoomController extends Controller
         $result = Room::where('id', $id)->firstOrFail();
 
         try{
-            
+            Storage::disk('dropbox')->delete($result->photo);
             $result->delete();
 
             $response = [
